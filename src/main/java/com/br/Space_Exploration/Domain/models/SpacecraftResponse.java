@@ -5,10 +5,7 @@ public class SpacecraftResponse {
     private String description;
     private double distanceSun;
 
-    public SpacecraftResponse(String name, String description, double distanceSun) {
-        this.name = name;
-        this.description = description;
-        this.distanceSun = distanceSun;
+    public SpacecraftResponse() {
     }
 
     public String getName() {
