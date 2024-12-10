@@ -1,14 +1,27 @@
-package com.br.Space_Exploration.Domain.models;
+package com.br.Space_Exploration.App.adapters.output.entities;
 
-public class SpacecraftResponse {
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "planets")
+public class PlanetEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
     private String name;
     private String description;
     private double distanceSun;
 
-    public SpacecraftResponse(String name, String description, double distanceSun) {
-        this.name = name;
-        this.description = description;
-        this.distanceSun = distanceSun;
+    public PlanetEntity() {
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -34,5 +47,4 @@ public class SpacecraftResponse {
     public void setDistanceSun(double distanceSun) {
         this.distanceSun = distanceSun;
     }
-
 }

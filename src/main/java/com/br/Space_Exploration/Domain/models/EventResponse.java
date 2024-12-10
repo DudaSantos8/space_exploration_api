@@ -7,7 +7,11 @@ public class EventResponse {
     private String typeFail;
     private int effect;
 
-    public EventResponse() {
+    public EventResponse(String name, String description, String typeFail, int effect) {
+        this.name = name;
+        this.description = description;
+        this.typeFail = typeFail;
+        this.effect = effect;
     }
 
     public String getName() {
