@@ -1,18 +1,18 @@
 package com.br.Space_Exploration.Domain.usercases.impl;
 
 import com.br.Space_Exploration.Domain.dtos.SpacecraftRegisterDto;
-import com.br.Space_Exploration.Domain.models.SpacecraftResponse;
-import com.br.Space_Exploration.Domain.usercases.Exploration;
+import com.br.Space_Exploration.Domain.dtos.SpacecraftResponseDto;
+import com.br.Space_Exploration.Domain.usercases.Spacecraft;
 
-public class ExplorationImpl implements Exploration {
+public class SpacecraftImpl implements Spacecraft {
 
     @Override
-    public SpacecraftResponse createSpacecraft(SpacecraftRegisterDto registerDto) {
+    public SpacecraftResponseDto createSpacecraft(SpacecraftRegisterDto registerDto) {
         return null;
     }
 
     @Override
-    public SpacecraftResponse getSpacecraftStatus(int idSpacecraft) {
+    public SpacecraftResponseDto getSpacecraftStatus(int idSpacecraft) {
         return null;
     }
 

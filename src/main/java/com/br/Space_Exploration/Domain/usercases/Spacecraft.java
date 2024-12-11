@@ -1,10 +1,9 @@
 package com.br.Space_Exploration.Domain.usercases;
 
 import com.br.Space_Exploration.Domain.dtos.SpacecraftRegisterDto;
-import com.br.Space_Exploration.Domain.models.SpacecraftResponse;
+import com.br.Space_Exploration.Domain.dtos.SpacecraftResponseDto;
 
-public interface Exploration {
-    SpacecraftResponse createSpacecraft(SpacecraftRegisterDto registerDto);
-
-    SpacecraftResponse getSpacecraftStatus(int idSpacecraft);
+public interface Spacecraft {
+    SpacecraftResponseDto createSpacecraft(SpacecraftRegisterDto registerDto);
+    SpacecraftResponseDto getSpacecraftStatus(int idSpacecraft);
 }
