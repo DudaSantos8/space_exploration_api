@@ -1,11 +1,11 @@
 package com.br.Space_Exploration.Domain.models;
 
-public class SpacecraftResponse {
+public class Spacecraft {
     private String name;
     private String description;
     private double distanceSun;
 
-    public SpacecraftResponse(String name, String description, double distanceSun) {
+    public Spacecraft(String name, String description, double distanceSun) {
         this.name = name;
         this.description = description;
         this.distanceSun = distanceSun;
