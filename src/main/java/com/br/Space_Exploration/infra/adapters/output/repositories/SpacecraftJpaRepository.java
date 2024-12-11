@@ -1,7 +1,7 @@
-package com.br.Space_Exploration.adapters.output.repositories;
+package com.br.Space_Exploration.infra.adapters.output.repositories;
 
-import com.br.Space_Exploration.adapters.output.entities.SpacecraftEntity;
-import com.br.Space_Exploration.ports.output.SpacecraftRepository;
+import com.br.Space_Exploration.infra.adapters.output.entities.SpacecraftEntity;
+import com.br.Space_Exploration.App.ports.output.SpacecraftRepository;
 import com.br.Space_Exploration.Domain.dtos.SpacecraftRegisterDto;
 import com.br.Space_Exploration.Domain.dtos.SpacecraftResponseDto;
 import com.fasterxml.jackson.databind.ObjectMapper;

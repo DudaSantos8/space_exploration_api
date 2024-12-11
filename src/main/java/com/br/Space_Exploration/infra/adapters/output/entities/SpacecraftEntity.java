@@ -1,4 +1,4 @@
-package com.br.Space_Exploration.adapters.output.entities;
+package com.br.Space_Exploration.infra.adapters.output.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;

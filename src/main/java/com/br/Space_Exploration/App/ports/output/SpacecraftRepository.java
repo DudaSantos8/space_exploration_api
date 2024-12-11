@@ -1,4 +1,4 @@
-package com.br.Space_Exploration.ports.output;
+package com.br.Space_Exploration.App.ports.output;
 
 import com.br.Space_Exploration.Domain.dtos.SpacecraftRegisterDto;
 import com.br.Space_Exploration.Domain.dtos.SpacecraftResponseDto;
