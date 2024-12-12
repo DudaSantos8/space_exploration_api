@@ -2,9 +2,9 @@ package com.br.Space_Exploration.Domain.dtos;
 
 public class SpacecraftRegisterDto {
     private String name;
-    private int fuel;
-    private int oxygen;
-    private int energy;
+    private double fuel;
+    private double oxygen;
+    private double energy;
 
     public SpacecraftRegisterDto() {
     }
@@ -17,27 +17,27 @@ public class SpacecraftRegisterDto {
         this.name = name;
     }
 
-    public int getFuel() {
+    public double getFuel() {
         return fuel;
     }
 
-    public void setFuel(int fuel) {
+    public void setFuel(double fuel) {
         this.fuel = fuel;
     }
 
-    public int getOxygen() {
+    public double getOxygen() {
         return oxygen;
     }
 
-    public void setOxygen(int oxygen) {
+    public void setOxygen(double oxygen) {
         this.oxygen = oxygen;
     }
 
-    public int getEnergy() {
+    public double getEnergy() {
         return energy;
     }
 
-    public void setEnergy(int energy) {
+    public void setEnergy(double energy) {
         this.energy = energy;
     }
 }

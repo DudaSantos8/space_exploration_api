@@ -1,21 +1,12 @@
-package com.br.Space_Exploration.Domain.dtos;
+package com.br.Space_Exploration.Domain.models;
 
-public class SpacecraftResponseDto {
-    private int id;
+public class SpacecraftModel {
     private String name;
     private double fuel;
     private double oxygen;
     private double energy;
 
-    public SpacecraftResponseDto() {
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
+    public SpacecraftModel() {
     }
 
     public String getName() {
