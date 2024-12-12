@@ -1,23 +1,40 @@
 package com.br.Space_Exploration.App.service;
 
+import com.br.Space_Exploration.App.ports.output.TravelRepository;
 import com.br.Space_Exploration.Domain.dtos.SpacecraftRegisterDto;
 import com.br.Space_Exploration.Domain.dtos.SpacecraftResponseDto;
+import com.br.Space_Exploration.Domain.dtos.Travel;
 import com.br.Space_Exploration.Domain.usercases.Spacecraft;
 import com.br.Space_Exploration.App.ports.input.SpacecraftService;
 import com.br.Space_Exploration.App.ports.output.SpacecraftRepository;
 import com.br.Space_Exploration.infra.adapters.input.mapper.SpacecraftMapper;
+import com.br.Space_Exploration.infra.adapters.input.mapper.TravelMapper;
 import com.br.Space_Exploration.infra.adapters.output.entities.SpacecraftEntity;
+import com.br.Space_Exploration.infra.adapters.output.entities.TravelEntity;
 import org.springframework.stereotype.Service;
 
 @Service
 public class SpacecraftServiceImpl implements SpacecraftService {
 
     private final SpacecraftRepository repository;
+    private final TravelRepository travelRepository;
     private final SpacecraftMapper mapper;
+    private final TravelMapper travelMapper;
+    private final Spacecraft spacecraftUsercase;
 
-    public SpacecraftServiceImpl(SpacecraftRepository repository,SpacecraftMapper mapper) {
+    public SpacecraftServiceImpl(SpacecraftRepository repository, TravelRepository travelRepository, SpacecraftMapper mapper, TravelMapper travelMapper, Spacecraft spacecraftUsercase) {
         this.repository = repository;
+        this.travelRepository = travelRepository;
         this.mapper = mapper;
+        this.travelMapper = travelMapper;
+        this.spacecraftUsercase = spacecraftUsercase;
+    }
+
+    @Override
+    public TravelEntity doTravel(String namePlanet, SpacecraftResponseDto spacecraft) {
+        SpacecraftEntity entity = repository.getById(spacecraft.getId());
+        Travel travel = spacecraftUsercase.doTravel(namePlanet, spacecraft);
+        return travelRepository.save(travelMapper.toEntity(travel, entity));
     }
 
     @Override
