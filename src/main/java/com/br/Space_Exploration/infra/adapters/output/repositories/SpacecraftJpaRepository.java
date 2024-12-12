@@ -24,8 +24,8 @@ public class SpacecraftJpaRepository implements SpacecraftRepository {
     }
 
     @Override
-    public SpacecraftEntity save(SpacecraftEntity registerDto) {
-        return repository.save(registerDto);
+    public SpacecraftEntity save(SpacecraftEntity spacecraftEntity) {
+        return repository.save(spacecraftEntity);
     }
 
 }

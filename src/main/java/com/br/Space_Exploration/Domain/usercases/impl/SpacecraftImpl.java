@@ -14,12 +14,6 @@ public class SpacecraftImpl implements Spacecraft {
 
     private static final double standardSpeed = 50000.0;
 
-
-    @Override
-    public Travel getTravelBySpacecraftId(SpacecraftResponseDto responseDto) {
-        return null;
-    }
-
     @Override
     public Travel doTravel(String namePlanet, SpacecraftResponseDto spacecraft) {
         EvaluateSpacecraftForTravel tripReview = new EvaluateSpacecraftForTravel();
@@ -30,16 +24,6 @@ public class SpacecraftImpl implements Spacecraft {
         }
         Travel travelRegister = registerTrip(planetResponseDto, spacecraft, travel.get(0), travel.get(1), travel.get(2));
         return travelRegister;
-    }
-
-    @Override
-    public PlanetResponseDto leaveThePlanet(int idSpacecraft) {
-        return null;
-    }
-
-    @Override
-    public EventResponseDto getEvent(int idSpacecraft) {
-        return null;
     }
 
     private Travel registerTrip(PlanetResponseDto planetResponseDto, SpacecraftResponseDto spacecraft, double fuelConsumed,

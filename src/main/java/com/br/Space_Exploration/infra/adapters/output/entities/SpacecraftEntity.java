@@ -1,7 +1,6 @@
 package com.br.Space_Exploration.infra.adapters.output.entities;
 
 import jakarta.persistence.*;
-import lombok.Data;
 
 @Entity
 @Table(name = "spacecraft")
@@ -11,9 +10,9 @@ public class SpacecraftEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;
-    private int fuel;
-    private int oxygen;
-    private int energy;
+    private double fuel;
+    private double oxygen;
+    private double energy;
 
     public SpacecraftEntity() {
     }
@@ -34,27 +33,27 @@ public class SpacecraftEntity {
         this.name = name;
     }
 
-    public int getFuel() {
+    public double getFuel() {
         return fuel;
     }
 
-    public void setFuel(int fuel) {
+    public void setFuel(double fuel) {
         this.fuel = fuel;
     }
 
-    public int getOxygen() {
+    public double getOxygen() {
         return oxygen;
     }
 
-    public void setOxygen(int oxygen) {
+    public void setOxygen(double oxygen) {
         this.oxygen = oxygen;
     }
 
-    public int getEnergy() {
+    public double getEnergy() {
         return energy;
     }
 
-    public void setEnergy(int energy) {
+    public void setEnergy(double energy) {
         this.energy = energy;
     }
 }
