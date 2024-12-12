@@ -2,13 +2,12 @@ package com.br.Space_Exploration.infra.adapters.input.controllers;
 
 import com.br.Space_Exploration.App.ports.input.SpacecraftService;
 import com.br.Space_Exploration.Domain.dtos.SpacecraftRegisterDto;
+import com.br.Space_Exploration.Domain.dtos.SpacecraftResponseDto;
 import com.br.Space_Exploration.infra.adapters.input.mapper.SpacecraftMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -26,6 +25,16 @@ public class SpacecraftController {
     public ResponseEntity<?> createSpacecraft(@RequestBody SpacecraftRegisterDto registerDto){
         try{
             return ResponseEntity.status(201).body(service.createSpacecraft(registerDto));
+        }catch (Exception e){
+            return ResponseEntity.status(404).body(Map.of("message", e.getMessage()));
+        }
+    }
+
+    @PutMapping("/{idShip}/{namePlanet}/travel")
+    public ResponseEntity<?> doingTravel(@PathVariable int idShip, @PathVariable String namePlanet){
+        try {
+            SpacecraftResponseDto responseDto = service.getSpacecraftStatus(idShip);
+            return ResponseEntity.status(200).body(service.doTravel(namePlanet, responseDto));
         }catch (Exception e){
             return ResponseEntity.status(404).body(Map.of("message", e.getMessage()));
         }
