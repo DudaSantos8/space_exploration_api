@@ -56,4 +56,20 @@ public enum EventResponseDto {
     public void setEffect(int effect) {
         this.effect = effect;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getTypeFail() {
+        return typeFail;
+    }
+
+    public int getEffect() {
+        return effect;
+    }
 }
