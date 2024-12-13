@@ -23,17 +23,29 @@ public class EvaluateSpacecraftForTravel {
         return CONSUMPTION_ENERGY_KM * distanceKm;
     }
 
-    private boolean assessWhetherYouCanTravel(SpacecraftResponseDto spacecraftResponseDto, double distanceKm) {
-        double fuelConsumption = calculateFuelConsumption(distanceKm);
-        double oxygenConsumption = calculateOxygenConsumption(distanceKm);
-        double energyConsumption = calculateEnergyConsumption(distanceKm);
-
-        return spacecraftResponseDto.getFuel() >= fuelConsumption
-                && spacecraftResponseDto.getOxygen() >= oxygenConsumption
-                && spacecraftResponseDto.getEnergy() >= energyConsumption;
+    private double calculateResourceConsumption(double consumptionRate, double distanceKm) {
+        return consumptionRate * distanceKm;
     }
 
-    public List<Double> tryTakeTrip(SpacecraftResponseDto spacecraftResponseDto, double distanceKm) {
+    private boolean assessWhetherYouCanTravel(SpacecraftResponseDto spacecraftResponseDto, double distanceKm) {
+        double fuelConsumption = calculateResourceConsumption(CONSUMPTION_FUEL_KM, distanceKm);
+        double oxygenConsumption = calculateResourceConsumption(CONSUMPTION_OXYGEN_KM, distanceKm);
+        double energyConsumption = calculateResourceConsumption(CONSUMPTION_ENERGY_KM, distanceKm);
+
+        if (spacecraftResponseDto.getFuel() < fuelConsumption) {
+            throw new IllegalArgumentException("Not enough fuel to complete the journey.");
+        }
+        if (spacecraftResponseDto.getOxygen() < oxygenConsumption) {
+            throw new IllegalArgumentException("Not enough oxygen to complete the journey.");
+        }
+        if (spacecraftResponseDto.getEnergy() < energyConsumption) {
+            throw new IllegalArgumentException("Not enough energy to complete the journey.");
+        }
+
+        return true;
+    }
+
+    public SpacecraftResponseDto tryTakeTrip(SpacecraftResponseDto spacecraftResponseDto, double distanceKm) {
         if (assessWhetherYouCanTravel(spacecraftResponseDto, distanceKm)) {
             List<Double> valuesOfShip = new ArrayList<>();
             double fuelConsumption = calculateFuelConsumption(distanceKm);
@@ -43,11 +55,8 @@ public class EvaluateSpacecraftForTravel {
             spacecraftResponseDto.setFuel(spacecraftResponseDto.getFuel() - fuelConsumption);
             spacecraftResponseDto.setOxygen(spacecraftResponseDto.getOxygen() - oxygenConsumption);
             spacecraftResponseDto.setEnergy(spacecraftResponseDto.  getEnergy() - energyConsumption);
-            valuesOfShip.add(fuelConsumption);
-            valuesOfShip.add(oxygenConsumption);
-            valuesOfShip.add(energyConsumption);
-            return valuesOfShip;
+            return spacecraftResponseDto;
         }
-        return List.of();
+        return spacecraftResponseDto;
     }
 }
