@@ -1,13 +1,13 @@
 package com.br.Space_Exploration.App.service;
 
-import com.br.Space_Exploration.App.ports.input.SpacecraftService;
-import com.br.Space_Exploration.App.ports.output.SpacecraftRepository;
 import com.br.Space_Exploration.App.ports.output.TravelRepository;
 import com.br.Space_Exploration.Domain.dtos.EventResponseDto;
 import com.br.Space_Exploration.Domain.dtos.SpacecraftRegisterDto;
 import com.br.Space_Exploration.Domain.dtos.SpacecraftResponseDto;
 import com.br.Space_Exploration.Domain.dtos.Travel;
 import com.br.Space_Exploration.Domain.usercases.Spacecraft;
+import com.br.Space_Exploration.App.ports.input.SpacecraftService;
+import com.br.Space_Exploration.App.ports.output.SpacecraftRepository;
 import com.br.Space_Exploration.infra.adapters.input.mapper.SpacecraftMapper;
 import com.br.Space_Exploration.infra.adapters.input.mapper.TravelMapper;
 import com.br.Space_Exploration.infra.adapters.output.entities.SpacecraftEntity;
@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Random;
 import java.util.function.BiConsumer;
 
@@ -38,43 +39,52 @@ public class SpacecraftServiceImpl implements SpacecraftService {
 
     @Override
     public TravelEntity doTravel(String namePlanet, SpacecraftResponseDto spacecraft) {
-        SpacecraftEntity entity = repository.getById(spacecraft.getId());
+        Optional<TravelEntity> travelEntityOptional = travelRepository.findTopBySpacecraftOrderByIdDesc(mapper.toEntityFromResponse(spacecraft));
+        if (travelEntityOptional.isPresent()) {
+            TravelEntity travelEntity = travelEntityOptional.get();
+            if (travelEntity.getDestination().equals(namePlanet)) {
+                throw new RuntimeException("You are already on this planet");
+            }
 
-        Travel travel = spacecraftUsercase.doTravel(namePlanet, spacecraft);
+            Travel travel = spacecraftUsercase.doTravel(travelMapper.toTravel(travelEntity, spacecraft), namePlanet, spacecraft);
+            SpacecraftResponseDto responseDto = updateSpacecraft(travel.getSpacecraft().getId(), mapper.toRegister(travel.getSpacecraft()));
+            return travelRepository.save(travelMapper.toEntity(travel, mapper.toEntityFromResponse(responseDto)));
+        }
 
-        EventResponseDto event = generateRandomEvent();
-
-        applyEventEffect(entity, event);
-
-        return travelRepository.save(travelMapper.toEntity(travel, entity));
+        Travel firstTravel = spacecraftUsercase.doTravel(null, namePlanet, spacecraft);
+        SpacecraftResponseDto responseDto = updateSpacecraft(firstTravel.getSpacecraft().getId(), mapper.toRegister(firstTravel.getSpacecraft()));
+        return travelRepository.save(travelMapper.toEntity(firstTravel, mapper.toEntityFromResponse(responseDto)));
     }
-
 
     @Override
     public SpacecraftResponseDto createSpacecraft(SpacecraftRegisterDto registerDto) {
-        return mapper.toResponse(repository.save(mapper.toEntity(registerDto)));
+        return mapper.toResponseFromEntity(repository.save(mapper.toEntity(registerDto)));
     }
 
     @Override
     public SpacecraftResponseDto getSpacecraftStatus(int idSpacecraft) {
-        return mapper.toResponse(repository.getById(idSpacecraft));
+        Optional<SpacecraftEntity> responseDtoOptional = repository.getById(idSpacecraft);
+        if(responseDtoOptional.isEmpty()){
+            throw new RuntimeException("This ship don't exist");
+        }
+        return mapper.toResponseFromEntity(responseDtoOptional.get());
     }
 
     @Override
     public SpacecraftResponseDto updateSpacecraft(int idSpacecraft, SpacecraftRegisterDto registerDto) {
-        SpacecraftEntity existingSpacecraft = repository.getById(idSpacecraft);
+        Optional<SpacecraftEntity> existingSpacecraft = repository.getById(idSpacecraft);
+        SpacecraftEntity spacecraftEntity = existingSpacecraft.get();
+        spacecraftEntity.setName(registerDto.getName());
+        spacecraftEntity.setFuel(registerDto.getFuel());
+        spacecraftEntity.setOxygen(registerDto.getOxygen());
+        spacecraftEntity.setEnergy(registerDto.getEnergy());
 
-        existingSpacecraft.setName(registerDto.getName());
-        existingSpacecraft.setFuel(registerDto.getFuel());
-        existingSpacecraft.setOxygen(registerDto.getOxygen());
-        existingSpacecraft.setEnergy(registerDto.getEnergy());
+        SpacecraftEntity updatedSpacecraft = repository.update(spacecraftEntity);
 
-        SpacecraftEntity updatedSpacecraft = repository.update(existingSpacecraft);
-
-        return mapper.toResponse(updatedSpacecraft);
+        return mapper.toResponseFromEntity(updatedSpacecraft);
     }
 
-   @Override
+    @Override
     public EventResponseDto generateRandomEvent() {
         Random random = new Random();
         EventResponseDto[] events = EventResponseDto.values();

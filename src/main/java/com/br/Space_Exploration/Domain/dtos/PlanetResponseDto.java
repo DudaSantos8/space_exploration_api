@@ -1,6 +1,7 @@
 package com.br.Space_Exploration.Domain.dtos;
 
 public enum PlanetResponseDto {
+    SUN("Sun", "Sun star",0.0),
     MERCURY("Mercury", "The closest planet to the Sun. It has extreme temperatures and no atmosphere.", 57.91),
     VENUS("Venus", "A toxic and acidic atmosphere with surface temperatures higher than Mercury's.", 108.2),
     EARTH("Earth", "Our home planet, with water and life. The only known planet to support life.", 149.6),
