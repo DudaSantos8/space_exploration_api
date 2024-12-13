@@ -74,8 +74,8 @@ public class SpacecraftServiceImpl implements SpacecraftService {
         return mapper.toResponse(updatedSpacecraft);
     }
 
-
-    private EventResponseDto generateRandomEvent() {
+   @Override
+    public EventResponseDto generateRandomEvent() {
         Random random = new Random();
         EventResponseDto[] events = EventResponseDto.values();
         return events[random.nextInt(events.length)];
