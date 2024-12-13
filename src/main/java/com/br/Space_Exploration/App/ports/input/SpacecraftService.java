@@ -8,4 +8,5 @@ public interface SpacecraftService {
     TravelEntity doTravel(String namePlanet, SpacecraftResponseDto responseDto);
     SpacecraftResponseDto createSpacecraft(SpacecraftRegisterDto registerDto);
     SpacecraftResponseDto getSpacecraftStatus(int idSpacecraft);
+    SpacecraftResponseDto updateSpacecraft(int idSpacecraft, SpacecraftRegisterDto registerDto);
 }

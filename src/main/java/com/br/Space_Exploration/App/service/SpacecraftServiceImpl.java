@@ -46,4 +46,18 @@ public class SpacecraftServiceImpl implements SpacecraftService {
     public SpacecraftResponseDto getSpacecraftStatus(int idSpacecraft) {
         return mapper.toResponse(repository.getById(idSpacecraft));
     }
+
+    @Override
+    public SpacecraftResponseDto updateSpacecraft(int idSpacecraft, SpacecraftRegisterDto registerDto) {
+        SpacecraftEntity existingSpacecraft = repository.getById(idSpacecraft);
+
+        existingSpacecraft.setName(registerDto.getName());
+        existingSpacecraft.setFuel(registerDto.getFuel());
+        existingSpacecraft.setOxygen(registerDto.getOxygen());
+        existingSpacecraft.setEnergy(registerDto.getEnergy());
+
+        SpacecraftEntity updatedSpacecraft = repository.update(existingSpacecraft);
+
+        return mapper.toResponse(updatedSpacecraft);
+    }
 }
