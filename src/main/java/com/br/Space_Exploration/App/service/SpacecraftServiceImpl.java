@@ -13,6 +13,8 @@ import com.br.Space_Exploration.infra.adapters.output.entities.SpacecraftEntity;
 import com.br.Space_Exploration.infra.adapters.output.entities.TravelEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class SpacecraftServiceImpl implements SpacecraftService {
 
@@ -32,32 +34,48 @@ public class SpacecraftServiceImpl implements SpacecraftService {
 
     @Override
     public TravelEntity doTravel(String namePlanet, SpacecraftResponseDto spacecraft) {
-        SpacecraftEntity entity = repository.getById(spacecraft.getId());
-        Travel travel = spacecraftUsercase.doTravel(namePlanet, spacecraft);
-        return travelRepository.save(travelMapper.toEntity(travel, entity));
+        Optional<TravelEntity> travelEntityOptional = travelRepository.findTopBySpacecraftOrderByIdDesc(mapper.toEntityFromResponse(spacecraft));
+        if (travelEntityOptional.isPresent()) {
+            TravelEntity travelEntity = travelEntityOptional.get();
+            if (travelEntity.getDestination().equals(namePlanet)) {
+                throw new RuntimeException("You are already on this planet");
+            }
+
+            Travel travel = spacecraftUsercase.doTravel(travelMapper.toTravel(travelEntity, spacecraft), namePlanet, spacecraft);
+            SpacecraftResponseDto responseDto = updateSpacecraft(travel.getSpacecraft().getId(), mapper.toRegister(travel.getSpacecraft()));
+            return travelRepository.save(travelMapper.toEntity(travel, mapper.toEntityFromResponse(responseDto)));
+        }
+
+        Travel firstTravel = spacecraftUsercase.doTravel(null, namePlanet, spacecraft);
+        SpacecraftResponseDto responseDto = updateSpacecraft(firstTravel.getSpacecraft().getId(), mapper.toRegister(firstTravel.getSpacecraft()));
+        return travelRepository.save(travelMapper.toEntity(firstTravel, mapper.toEntityFromResponse(responseDto)));
     }
 
     @Override
     public SpacecraftResponseDto createSpacecraft(SpacecraftRegisterDto registerDto) {
-        return mapper.toResponse(repository.save(mapper.toEntity(registerDto)));
+        return mapper.toResponseFromEntity(repository.save(mapper.toEntity(registerDto)));
     }
 
     @Override
     public SpacecraftResponseDto getSpacecraftStatus(int idSpacecraft) {
-        return mapper.toResponse(repository.getById(idSpacecraft));
+        Optional<SpacecraftEntity> responseDtoOptional = repository.getById(idSpacecraft);
+        if(responseDtoOptional.isEmpty()){
+            throw new RuntimeException("This ship don't exist");
+        }
+        return mapper.toResponseFromEntity(responseDtoOptional.get());
     }
 
     @Override
     public SpacecraftResponseDto updateSpacecraft(int idSpacecraft, SpacecraftRegisterDto registerDto) {
-        SpacecraftEntity existingSpacecraft = repository.getById(idSpacecraft);
+        Optional<SpacecraftEntity> existingSpacecraft = repository.getById(idSpacecraft);
+        SpacecraftEntity spacecraftEntity = existingSpacecraft.get();
+        spacecraftEntity.setName(registerDto.getName());
+        spacecraftEntity.setFuel(registerDto.getFuel());
+        spacecraftEntity.setOxygen(registerDto.getOxygen());
+        spacecraftEntity.setEnergy(registerDto.getEnergy());
 
-        existingSpacecraft.setName(registerDto.getName());
-        existingSpacecraft.setFuel(registerDto.getFuel());
-        existingSpacecraft.setOxygen(registerDto.getOxygen());
-        existingSpacecraft.setEnergy(registerDto.getEnergy());
+        SpacecraftEntity updatedSpacecraft = repository.update(spacecraftEntity);
 
-        SpacecraftEntity updatedSpacecraft = repository.update(existingSpacecraft);
-
-        return mapper.toResponse(updatedSpacecraft);
+        return mapper.toResponseFromEntity(updatedSpacecraft);
     }
 }
