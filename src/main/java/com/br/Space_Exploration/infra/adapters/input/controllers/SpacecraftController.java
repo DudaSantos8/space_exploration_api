@@ -3,8 +3,6 @@ package com.br.Space_Exploration.infra.adapters.input.controllers;
 import com.br.Space_Exploration.App.ports.input.SpacecraftService;
 import com.br.Space_Exploration.Domain.dtos.SpacecraftRegisterDto;
 import com.br.Space_Exploration.Domain.dtos.SpacecraftResponseDto;
-import com.br.Space_Exploration.infra.adapters.input.mapper.SpacecraftMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;

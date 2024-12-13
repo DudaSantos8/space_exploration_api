@@ -1,6 +1,7 @@
 package com.br.Space_Exploration.infra.adapters.output.repositories;
 
 import com.br.Space_Exploration.App.ports.output.TravelRepository;
+import com.br.Space_Exploration.infra.adapters.output.entities.SpacecraftEntity;
 import com.br.Space_Exploration.infra.adapters.output.entities.TravelEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -16,10 +17,10 @@ public class TravelJpaRepository implements TravelRepository {
         this.repository = repository;
     }
 
+
     @Override
-    public TravelEntity getById(int id) {
-        Optional<TravelEntity> entity = repository.findById(id);
-        return entity.get();
+    public Optional<TravelEntity> findTopBySpacecraftOrderByIdDesc(SpacecraftEntity spacecraft) {
+        return repository.findTopBySpacecraftOrderByIdDesc(spacecraft);
     }
 
     @Override
@@ -29,5 +30,5 @@ public class TravelJpaRepository implements TravelRepository {
 }
 
 interface JpaTravelRepository extends JpaRepository<TravelEntity, Integer> {
-
+    Optional<TravelEntity> findTopBySpacecraftOrderByIdDesc(SpacecraftEntity spacecraft);
 }

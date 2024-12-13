@@ -18,9 +18,9 @@ public class SpacecraftJpaRepository implements SpacecraftRepository {
     }
 
     @Override
-    public SpacecraftEntity getById(int id) {
+    public Optional<SpacecraftEntity> getById(int id) {
         Optional<SpacecraftEntity> entity = repository.findById(id);
-        return entity.get();
+        return entity;
     }
 
     @Override
