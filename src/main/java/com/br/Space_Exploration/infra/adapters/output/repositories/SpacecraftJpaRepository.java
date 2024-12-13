@@ -28,6 +28,10 @@ public class SpacecraftJpaRepository implements SpacecraftRepository {
         return repository.save(registerDto);
     }
 
+    @Override
+    public SpacecraftEntity update(SpacecraftEntity spacecraft) {
+        return repository.save(spacecraft);
+    }
 }
 
 interface JpaSpacecraftRepository extends JpaRepository<SpacecraftEntity, Integer> {
