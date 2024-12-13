@@ -7,4 +7,5 @@ import com.br.Space_Exploration.infra.adapters.output.entities.SpacecraftEntity;
 public interface SpacecraftService {
     SpacecraftResponseDto createSpacecraft(SpacecraftRegisterDto registerDto);
     SpacecraftResponseDto getSpacecraftStatus(int idSpacecraft);
+    SpacecraftResponseDto updateSpacecraft(int idSpacecraft, SpacecraftRegisterDto registerDto);
 }
