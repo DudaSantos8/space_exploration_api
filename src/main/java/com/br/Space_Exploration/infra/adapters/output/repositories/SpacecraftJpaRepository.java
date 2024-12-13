@@ -1,12 +1,14 @@
 package com.br.Space_Exploration.infra.adapters.output.repositories;
 
+import com.br.Space_Exploration.App.ports.output.SpacecraftRepository;
+import com.br.Space_Exploration.Domain.dtos.EventResponseDto;
 import com.br.Space_Exploration.infra.adapters.input.mapper.SpacecraftMapper;
 import com.br.Space_Exploration.infra.adapters.output.entities.SpacecraftEntity;
-import com.br.Space_Exploration.App.ports.output.SpacecraftRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
+import java.util.Random;
 
 @Repository
 public class SpacecraftJpaRepository implements SpacecraftRepository {
@@ -31,6 +33,13 @@ public class SpacecraftJpaRepository implements SpacecraftRepository {
     @Override
     public SpacecraftEntity update(SpacecraftEntity spacecraft) {
         return repository.save(spacecraft);
+    }
+
+    @Override
+    public EventResponseDto generateRandomEvent() {
+        Random random = new Random();
+        EventResponseDto[] events = EventResponseDto.values();
+        return events[random.nextInt(events.length)];
     }
 }
 
