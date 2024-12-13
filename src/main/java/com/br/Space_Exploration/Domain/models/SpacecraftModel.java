@@ -1,28 +1,12 @@
-package com.br.Space_Exploration.infra.adapters.output.entities;
+package com.br.Space_Exploration.Domain.models;
 
-import jakarta.persistence.*;
-
-@Entity
-@Table(name = "spacecraft")
-public class SpacecraftEntity {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+public class SpacecraftModel {
     private String name;
     private double fuel;
     private double oxygen;
     private double energy;
 
-    public SpacecraftEntity() {
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
+    public SpacecraftModel() {
     }
 
     public String getName() {

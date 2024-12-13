@@ -7,9 +7,7 @@ import com.br.Space_Exploration.infra.adapters.input.mapper.SpacecraftMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -32,12 +30,22 @@ public class SpacecraftController {
         }
     }
 
+
     @PutMapping("/{id}")
     public ResponseEntity<SpacecraftResponseDto> updateSpacecraft(@PathVariable int id, @RequestBody SpacecraftRegisterDto registerDto) {
         try {
             SpacecraftResponseDto updatedSpacecraft = service.updateSpacecraft(id, registerDto);
             return ResponseEntity.ok(updatedSpacecraft);
         } catch (Exception e) {
+           return ResponseEntity.status(404).body(Map.of("message", e.getMessage()));
+        }
+
+    @PutMapping("/{idShip}/{namePlanet}/travel")
+    public ResponseEntity<?> doingTravel(@PathVariable int idShip, @PathVariable String namePlanet){
+        try {
+            SpacecraftResponseDto responseDto = service.getSpacecraftStatus(idShip);
+            return ResponseEntity.status(200).body(service.doTravel(namePlanet, responseDto));
+        }catch (Exception e){
             return ResponseEntity.status(404).body(Map.of("message", e.getMessage()));
         }
     }
