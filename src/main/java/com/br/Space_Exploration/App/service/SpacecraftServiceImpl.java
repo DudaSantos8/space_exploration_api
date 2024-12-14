@@ -1,13 +1,11 @@
 package com.br.Space_Exploration.App.service;
 
 import com.br.Space_Exploration.App.ports.output.TravelRepository;
-import com.br.Space_Exploration.Domain.dtos.EventResponseDto;
-import com.br.Space_Exploration.Domain.dtos.SpacecraftRegisterDto;
-import com.br.Space_Exploration.Domain.dtos.SpacecraftResponseDto;
-import com.br.Space_Exploration.Domain.dtos.Travel;
+import com.br.Space_Exploration.Domain.dtos.*;
 import com.br.Space_Exploration.Domain.usercases.Spacecraft;
 import com.br.Space_Exploration.App.ports.input.SpacecraftService;
 import com.br.Space_Exploration.App.ports.output.SpacecraftRepository;
+import com.br.Space_Exploration.infra.adapters.input.mapper.PlanetMapper;
 import com.br.Space_Exploration.infra.adapters.input.mapper.SpacecraftMapper;
 import com.br.Space_Exploration.infra.adapters.input.mapper.TravelMapper;
 import com.br.Space_Exploration.infra.adapters.output.entities.SpacecraftEntity;
@@ -27,13 +25,15 @@ public class SpacecraftServiceImpl implements SpacecraftService {
     private final TravelRepository travelRepository;
     private final SpacecraftMapper mapper;
     private final TravelMapper travelMapper;
+    private final PlanetMapper planetMapper;
     private final Spacecraft spacecraftUsercase;
 
-    public SpacecraftServiceImpl(SpacecraftRepository repository, TravelRepository travelRepository, SpacecraftMapper mapper, TravelMapper travelMapper, Spacecraft spacecraftUsercase) {
+    public SpacecraftServiceImpl(SpacecraftRepository repository, TravelRepository travelRepository, SpacecraftMapper mapper, TravelMapper travelMapper, PlanetMapper planetMapper, Spacecraft spacecraftUsercase) {
         this.repository = repository;
         this.travelRepository = travelRepository;
         this.mapper = mapper;
         this.travelMapper = travelMapper;
+        this.planetMapper = planetMapper;
         this.spacecraftUsercase = spacecraftUsercase;
     }
 
@@ -82,6 +82,17 @@ public class SpacecraftServiceImpl implements SpacecraftService {
         SpacecraftEntity updatedSpacecraft = repository.update(spacecraftEntity);
 
         return mapper.toResponseFromEntity(updatedSpacecraft);
+    }
+
+    @Override
+    public PlanetResponseDto planetInformation(SpacecraftResponseDto spacecraft) {
+        Optional<TravelEntity> travelEntityOptional = travelRepository.findTopBySpacecraftOrderByIdDesc(mapper.toEntityFromResponse(spacecraft));
+        if (travelEntityOptional.isEmpty()){
+            throw new RuntimeException("You don't do any travel");
+        }
+        Travel travel = travelMapper.toTravel(travelEntityOptional.get(), mapper.toResponseFromEntity(travelEntityOptional.get().getSpacecraft()));
+
+        return planetMapper.toPlanetResponse(spacecraftUsercase.seeInformationPlanet(travel), spacecraft);
     }
 
     @Override
