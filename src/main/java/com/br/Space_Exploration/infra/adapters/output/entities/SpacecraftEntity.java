@@ -1,6 +1,7 @@
 package com.br.Space_Exploration.infra.adapters.output.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "spacecraft")
@@ -9,9 +10,21 @@ public class SpacecraftEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
+    @NotNull
+    @Column(nullable = false)
     private String name;
+
+    @NotNull
+    @Column(nullable = false)
     private double fuel;
+
+    @NotNull
+    @Column(nullable = false)
     private double oxygen;
+
+    @NotNull
+    @Column(nullable = false)
     private double energy;
 
     public SpacecraftEntity() {

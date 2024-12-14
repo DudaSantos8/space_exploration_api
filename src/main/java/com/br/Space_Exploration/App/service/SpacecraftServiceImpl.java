@@ -58,6 +58,18 @@ public class SpacecraftServiceImpl implements SpacecraftService {
 
     @Override
     public SpacecraftResponseDto createSpacecraft(SpacecraftRegisterDto registerDto) {
+        if (registerDto.getName().isEmpty()){
+            throw new RuntimeException(String.valueOf(Map.of("name", "this field cant be empty")));
+        }
+        if (registerDto.getEnergy() < 1000.0){
+            throw new RuntimeException(String.valueOf(Map.of("energy", "this field cannot be less than 1000")));
+        }
+        if(registerDto.getOxygen() < 1000.0){
+            throw new RuntimeException(String.valueOf(Map.of("oxygen", "this field cannot be less than 1000")));
+        }
+        if (registerDto.getFuel() < 3000.0){
+            throw new RuntimeException(String.valueOf(Map.of("fuel", "this field cannot be less than 3000")));
+        }
         return mapper.toResponseFromEntity(repository.save(mapper.toEntity(registerDto)));
     }
 
