@@ -85,7 +85,24 @@ public class SpacecraftServiceImpl implements SpacecraftService {
     @Override
     public SpacecraftResponseDto updateSpacecraft(int idSpacecraft, SpacecraftRegisterDto registerDto) {
         Optional<SpacecraftEntity> existingSpacecraft = repository.getById(idSpacecraft);
+        if(existingSpacecraft.isEmpty()){
+            throw new RuntimeException("This spacecraft don't exist");
+        }
+        if (registerDto.getName().isEmpty()){
+            throw new RuntimeException(String.valueOf(Map.of("name", "this field cant be empty")));
+        }
+        if (registerDto.getEnergy() < 1000.0){
+            throw new RuntimeException(String.valueOf(Map.of("energy", "this field cannot be less than 1000")));
+        }
+        if(registerDto.getOxygen() < 1000.0){
+            throw new RuntimeException(String.valueOf(Map.of("oxygen", "this field cannot be less than 1000")));
+        }
+        if (registerDto.getFuel() < 3000.0){
+            throw new RuntimeException(String.valueOf(Map.of("fuel", "this field cannot be less than 3000")));
+        }
+
         SpacecraftEntity spacecraftEntity = existingSpacecraft.get();
+
         spacecraftEntity.setName(registerDto.getName());
         spacecraftEntity.setFuel(registerDto.getFuel());
         spacecraftEntity.setOxygen(registerDto.getOxygen());
