@@ -48,4 +48,14 @@ public class SpacecraftController {
             return ResponseEntity.status(404).body(Map.of("message", e.getMessage()));
         }
     }
+
+    @PutMapping("/{idShip}/planet")
+    public ResponseEntity<?> doingTravel(@PathVariable int idShip){
+        try {
+            SpacecraftResponseDto responseDto = service.getSpacecraftStatus(idShip);
+            return ResponseEntity.status(200).body(service.planetInformation(responseDto));
+        }catch (Exception e){
+            return ResponseEntity.status(404).body(Map.of("message", e.getMessage()));
+        }
+    }
 }
