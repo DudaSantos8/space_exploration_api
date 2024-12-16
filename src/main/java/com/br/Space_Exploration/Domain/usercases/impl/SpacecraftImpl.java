@@ -21,12 +21,10 @@ public class SpacecraftImpl implements Spacecraft {
             String lastDestination = lastTravel.getDestination();
             PlanetResponseDto lastPlanet = PlanetResponseDto.valueOf(lastDestination);
             SpacecraftResponseDto travelValidation =  tripReview.tryTakeTrip(lastTravel.getSpacecraft(), calculateTravelDistance(planetResponseDto, lastPlanet));
-            Travel travelRegister = registerTrip(planetResponseDto, travelValidation, travelValidation.getFuel(), travelValidation.getOxygen(), travelValidation.getEnergy(), lastPlanet);
-            return travelRegister;
+            return registerTrip(planetResponseDto, travelValidation, travelValidation.getFuel(), travelValidation.getOxygen(), travelValidation.getEnergy(), lastPlanet);
         }
         SpacecraftResponseDto travelValidation =  tripReview.tryTakeTrip(spacecraft, calculateTravelDistance(planetResponseDto, PlanetResponseDto.SUN));
-        Travel travelRegister = registerTrip(planetResponseDto, travelValidation, travelValidation.getFuel(), travelValidation.getOxygen(), travelValidation.getEnergy(), PlanetResponseDto.SUN);
-        return travelRegister;
+        return registerTrip(planetResponseDto, travelValidation, travelValidation.getFuel(), travelValidation.getOxygen(), travelValidation.getEnergy(), PlanetResponseDto.SUN);
     }
 
     private Travel registerTrip(PlanetResponseDto planetResponseDto, SpacecraftResponseDto spacecraft, double fuelConsumed,
@@ -46,11 +44,14 @@ public class SpacecraftImpl implements Spacecraft {
     }
 
     private double calculateTravelTime(PlanetResponseDto planetResponseDto, PlanetResponseDto lastDestination){
-        double distanceInKm = planetResponseDto.getDistanceSun() * 1_000_000; // Converter para km
+        double distanceInKm = planetResponseDto.getDistanceSun() * 1_000_000;
         double timeHours = distanceInKm / standardSpeed;
         if(lastDestination != PlanetResponseDto.SUN){
             double distanceBase = lastDestination.getDistanceSun() * 1_000_000;
             timeHours = (distanceInKm - distanceBase) / standardSpeed;
+        }
+        if (timeHours < 0.0){
+            timeHours *= -1;
         }
         return timeHours / 24;
     }
