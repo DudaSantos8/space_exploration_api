@@ -97,6 +97,15 @@ public class SpacecraftServiceImpl implements SpacecraftService {
     }
 
     @Override
+    public void deleteSpacecraft(int idSpacecraft) {
+        Optional<SpacecraftEntity> spacecraftEntity = repository.getById(idSpacecraft);
+        if(spacecraftEntity.isEmpty()){
+            throw new RuntimeException("This spacecraft don't exist");
+        }
+        repository.delete(spacecraftEntity.get());
+    }
+
+    @Override
     public PlanetResponseDto planetInformation(SpacecraftResponseDto spacecraft) {
         Optional<TravelEntity> travelEntityOptional = travelRepository.findTopBySpacecraftOrderByIdDesc(mapper.toEntityFromResponse(spacecraft));
         if (travelEntityOptional.isEmpty()){

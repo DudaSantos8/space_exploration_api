@@ -36,6 +36,11 @@ public class SpacecraftJpaRepository implements SpacecraftRepository {
     }
 
     @Override
+    public void delete(SpacecraftEntity spacecraftEntity) {
+        repository.delete(spacecraftEntity);
+    }
+
+    @Override
     public EventResponseDto generateRandomEvent() {
         Random random = new Random();
         EventResponseDto[] events = EventResponseDto.values();

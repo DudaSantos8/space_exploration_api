@@ -49,6 +49,16 @@ public class SpacecraftController {
         }
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteSpacecraft(@PathVariable int id) {
+        try {
+            service.deleteSpacecraft(id);
+            return ResponseEntity.status(204).build();
+        } catch (Exception e) {
+            return ResponseEntity.status(404).body(Map.of("message", e.getMessage()));
+        }
+    }
+
     @PutMapping("/{idShip}/{namePlanet}/travel")
     public ResponseEntity<?> doingTravel(@PathVariable int idShip, @PathVariable String namePlanet){
         try {
@@ -60,7 +70,7 @@ public class SpacecraftController {
     }
 
     @PutMapping("/{idShip}/planet")
-    public ResponseEntity<?> doingTravel(@PathVariable int idShip){
+    public ResponseEntity<?> getPlanetInformation(@PathVariable int idShip){
         try {
             SpacecraftResponseDto responseDto = service.getSpacecraftStatus(idShip);
             return ResponseEntity.status(200).body(service.planetInformation(responseDto));
