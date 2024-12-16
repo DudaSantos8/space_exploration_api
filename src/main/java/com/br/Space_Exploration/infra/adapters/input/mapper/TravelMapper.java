@@ -6,7 +6,7 @@ import com.br.Space_Exploration.infra.adapters.output.entities.SpacecraftEntity;
 import com.br.Space_Exploration.infra.adapters.output.entities.TravelEntity;
 
 public class TravelMapper {
-    public TravelEntity toEntity(Travel travel, SpacecraftEntity spacecraft){
+    public TravelEntity toEntity(Travel travel, String event, SpacecraftEntity spacecraft){
         TravelEntity entity = new TravelEntity();
 
         entity.setSpacecraft(spacecraft);
@@ -16,6 +16,7 @@ public class TravelMapper {
         entity.setFuelConsumedInLiters(travel.getFuelConsumed());
         entity.setEnergyConsumedInKilowattHours(travel.getEnergyConsumed());
         entity.setOxygenConsumedInCubicMeters(travel.getOxygenConsumed());
+        entity.setEvent(event);
 
         return entity;
     }
@@ -30,6 +31,7 @@ public class TravelMapper {
         travel.setFuelConsumed(travelEntity.getFuelConsumedInLiters());
         travel.setEnergyConsumed(travelEntity.getEnergyConsumedInKilowattHours());
         travel.setOxygenConsumed(travelEntity.getOxygenConsumedInCubicMeters());
+        travel.setEvent(travelEntity.getEvent());
 
         return travel;
     }

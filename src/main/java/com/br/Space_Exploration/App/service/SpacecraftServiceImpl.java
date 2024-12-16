@@ -48,13 +48,13 @@ public class SpacecraftServiceImpl implements SpacecraftService {
             Travel travel = spacecraftUsercase.doTravel(travelMapper.toTravel(travelEntity, spacecraft), namePlanet, spacecraft);
             applyEventEffect(travelEntity.getSpacecraft(), event);
             SpacecraftResponseDto responseDto = updateSpacecraft(travel.getSpacecraft().getId(), mapper.toRegister(travel.getSpacecraft()));
-            return travelRepository.save(travelMapper.toEntity(travel, mapper.toEntityFromResponse(responseDto)));
+            return travelRepository.save(travelMapper.toEntity(travel, event.getName(),mapper.toEntityFromResponse(responseDto)));
         }
 
         Travel firstTravel = spacecraftUsercase.doTravel(null, namePlanet, spacecraft);
         applyEventEffect(mapper.toEntityFromResponse(spacecraft), event);
         SpacecraftResponseDto responseDto = updateSpacecraft(firstTravel.getSpacecraft().getId(), mapper.toRegister(firstTravel.getSpacecraft()));
-        return travelRepository.save(travelMapper.toEntity(firstTravel, mapper.toEntityFromResponse(responseDto)));
+        return travelRepository.save(travelMapper.toEntity(firstTravel, event.getName(),mapper.toEntityFromResponse(responseDto)));
     }
 
     @Override

@@ -1,6 +1,5 @@
 package com.br.Space_Exploration.Domain.dtos;
 
-import com.br.Space_Exploration.Domain.models.SpacecraftModel;
 
 import java.time.LocalDate;
 
@@ -8,6 +7,7 @@ public class Travel {
 
     private SpacecraftResponseDto spacecraft;
     private String destination;
+    private String event;
     private LocalDate date;
     private Double duration;
     private double fuelConsumed;
@@ -31,6 +31,14 @@ public class Travel {
 
     public void setDestination(String destination) {
         this.destination = destination;
+    }
+
+    public String getEvent() {
+        return event;
+    }
+
+    public void setEvent(String event) {
+        this.event = event;
     }
 
     public LocalDate getDate() {

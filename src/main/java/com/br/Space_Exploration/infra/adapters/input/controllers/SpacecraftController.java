@@ -23,7 +23,7 @@ public class SpacecraftController {
     @GetMapping("/{id}")
     public ResponseEntity<?> getSpacecraftStatus(@PathVariable int id){
         try{
-            return ResponseEntity.status(201).body(service.getSpacecraftStatus(id));
+            return ResponseEntity.status(200).body(service.getSpacecraftStatus(id));
         }catch (Exception e){
             return ResponseEntity.status(404).body(Map.of("message", e.getMessage()));
         }
