@@ -3,29 +3,29 @@ package com.br.Space_Exploration.Domain.dtos;
 public enum EventResponseDto {
 
     EVENT1("The spaceship finds a refueling station and gets extra fuel.", "Refueling successful! Fuel refilled.",
-            "fuel",30),
+            "fuel",300),
     EVENT2("The engine failure consumes extra fuel.", "Engine failure! Extra fuel consumed.",
-            "fuel",-10),
+            "fuel",-100),
     EVENT3(" There's a leak in the life support system, and oxygen is lost.", "Oxygen leak detected! Oxygen reduced.",
-            "oxygen", -15),
+            "oxygen", -150),
     EVENT4("The spaceship discovers a new oxygen source on a planet or station.", "Oxygen source discovered! Oxygen increased.",
-            "oxygen", 20),
+            "oxygen", 200),
     EVENT5("Reduces the spaceship's energy due to solar interference.", "Solar storm! Energy reduced.",
-            "energy", -20),
+            "energy", -200),
     EVENT6("The spaceship repairs its energy system and restores some energy.", "Repair completed! Energy restored.",
-            "energy", 25),
+            "energy", 250),
     EVENT7("The spaceship successfully explores a new planet and recovers resources.", "Successful exploration! Energy recovered.",
-            "energy", 10),
+            "energy", 100),
     EVENT8("A failure in the communication system consumes more energy.", "Communication failure! Extra energy consumed.",
-            "energy", -10),
+            "energy", -100),
     EVENT9("The cooling system failed, causing increased oxygen consumption.","Excessive heating! Oxygen consumed.",
-            "oxygen", -20),
+            "oxygen", -200),
     EVENT10("A crew member sabotaged the energy system, reducing energy.", "Internal sabotage! Energy compromised.",
-            "energy", -25),
+            "energy", -250),
     EVENT11("A planet's gravity alters the spaceship's course, consuming more fuel and oxygen.", "Gravitational avalanche! Extra fuel and oxygen consumed.",
-            "fuel", -20),
+            "fuel", -200),
     EVENT12("The spaceship makes emergency repairs and restores some resources.", "Emergency repairs! Fuel and oxygen restored.",
-            "oxygen", 5);
+            "oxygen", 50);
 
 
 

@@ -10,7 +10,7 @@ public class TravelEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "spacecraft_id")
+    @JoinColumn(name = "spacecraft_id", nullable = true, foreignKey = @ForeignKey(name = "fk_trip_spacecraft"))
     private SpacecraftEntity spacecraft;
     private String destination;
     private LocalDate date;
