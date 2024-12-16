@@ -1,6 +1,9 @@
 package com.br.Space_Exploration.infra.adapters.output.entities;
 
+import com.br.Space_Exploration.Domain.dtos.EventResponseDto;
 import jakarta.persistence.*;
+import jdk.jfr.Event;
+
 import java.time.LocalDate;
 
 @Entity
@@ -10,9 +13,10 @@ public class TravelEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "spacecraft_id")
+    @JoinColumn(name = "spacecraft_id", nullable = true, foreignKey = @ForeignKey(name = "fk_trip_spacecraft"))
     private SpacecraftEntity spacecraft;
     private String destination;
+    private String event;
     private LocalDate date;
     private Double durationInDays;
     private double fuelConsumedInLiters;
@@ -44,6 +48,14 @@ public class TravelEntity {
 
     public void setDestination(String destination) {
         this.destination = destination;
+    }
+
+    public String getEvent() {
+        return event;
+    }
+
+    public void setEvent(String event) {
+        this.event = event;
     }
 
     public LocalDate getDate() {

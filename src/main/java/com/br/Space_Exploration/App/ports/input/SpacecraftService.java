@@ -8,6 +8,7 @@ public interface SpacecraftService {
     SpacecraftResponseDto createSpacecraft(SpacecraftRegisterDto registerDto);
     SpacecraftResponseDto getSpacecraftStatus(int idSpacecraft);
     SpacecraftResponseDto updateSpacecraft(int idSpacecraft, SpacecraftRegisterDto registerDto);
+    void deleteSpacecraft(int idSpacecraft);
     PlanetResponseDto planetInformation(SpacecraftResponseDto responseDto);
     EventResponseDto generateRandomEvent();
 }

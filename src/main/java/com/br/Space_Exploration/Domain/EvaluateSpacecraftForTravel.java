@@ -2,8 +2,6 @@ package com.br.Space_Exploration.Domain;
 
 import com.br.Space_Exploration.Domain.dtos.SpacecraftResponseDto;
 
-import java.util.ArrayList;
-import java.util.List;
 
 public class EvaluateSpacecraftForTravel {
 
@@ -47,7 +45,6 @@ public class EvaluateSpacecraftForTravel {
 
     public SpacecraftResponseDto tryTakeTrip(SpacecraftResponseDto spacecraftResponseDto, double distanceKm) {
         if (assessWhetherYouCanTravel(spacecraftResponseDto, distanceKm)) {
-            List<Double> valuesOfShip = new ArrayList<>();
             double fuelConsumption = calculateFuelConsumption(distanceKm);
             double oxygenConsumption = calculateOxygenConsumption(distanceKm);
             double energyConsumption = calculateEnergyConsumption(distanceKm);

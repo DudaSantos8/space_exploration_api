@@ -9,6 +9,7 @@ public interface SpacecraftRepository {
     Optional<SpacecraftEntity> getById(int id);
     SpacecraftEntity save (SpacecraftEntity spacecraftEntity);
     SpacecraftEntity update(SpacecraftEntity spacecraft);
+    void delete(SpacecraftEntity spacecraftEntity);
     EventResponseDto generateRandomEvent();
 
 }

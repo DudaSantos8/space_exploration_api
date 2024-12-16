@@ -10,12 +10,10 @@ import com.br.Space_Exploration.infra.adapters.input.mapper.SpacecraftMapper;
 import com.br.Space_Exploration.infra.adapters.input.mapper.TravelMapper;
 import com.br.Space_Exploration.infra.adapters.output.entities.SpacecraftEntity;
 import com.br.Space_Exploration.infra.adapters.output.entities.TravelEntity;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 import java.util.function.BiConsumer;
 
 @Service
@@ -40,6 +38,7 @@ public class SpacecraftServiceImpl implements SpacecraftService {
     @Override
     public TravelEntity doTravel(String namePlanet, SpacecraftResponseDto spacecraft) {
         Optional<TravelEntity> travelEntityOptional = travelRepository.findTopBySpacecraftOrderByIdDesc(mapper.toEntityFromResponse(spacecraft));
+        EventResponseDto event = generateRandomEvent();
         if (travelEntityOptional.isPresent()) {
             TravelEntity travelEntity = travelEntityOptional.get();
             if (travelEntity.getDestination().equals(namePlanet)) {
@@ -47,17 +46,31 @@ public class SpacecraftServiceImpl implements SpacecraftService {
             }
 
             Travel travel = spacecraftUsercase.doTravel(travelMapper.toTravel(travelEntity, spacecraft), namePlanet, spacecraft);
+            applyEventEffect(travelEntity.getSpacecraft(), event);
             SpacecraftResponseDto responseDto = updateSpacecraft(travel.getSpacecraft().getId(), mapper.toRegister(travel.getSpacecraft()));
-            return travelRepository.save(travelMapper.toEntity(travel, mapper.toEntityFromResponse(responseDto)));
+            return travelRepository.save(travelMapper.toEntity(travel, event.getName(),mapper.toEntityFromResponse(responseDto)));
         }
 
         Travel firstTravel = spacecraftUsercase.doTravel(null, namePlanet, spacecraft);
+        applyEventEffect(mapper.toEntityFromResponse(spacecraft), event);
         SpacecraftResponseDto responseDto = updateSpacecraft(firstTravel.getSpacecraft().getId(), mapper.toRegister(firstTravel.getSpacecraft()));
-        return travelRepository.save(travelMapper.toEntity(firstTravel, mapper.toEntityFromResponse(responseDto)));
+        return travelRepository.save(travelMapper.toEntity(firstTravel, event.getName(),mapper.toEntityFromResponse(responseDto)));
     }
 
     @Override
     public SpacecraftResponseDto createSpacecraft(SpacecraftRegisterDto registerDto) {
+        if (registerDto.getName().isEmpty()){
+            throw new RuntimeException(String.valueOf(Map.of("name", "this field cant be empty")));
+        }
+        if (registerDto.getEnergy() < 1000.0){
+            throw new RuntimeException(String.valueOf(Map.of("energy", "this field cannot be less than 1000")));
+        }
+        if(registerDto.getOxygen() < 1000.0){
+            throw new RuntimeException(String.valueOf(Map.of("oxygen", "this field cannot be less than 1000")));
+        }
+        if (registerDto.getFuel() < 3000.0){
+            throw new RuntimeException(String.valueOf(Map.of("fuel", "this field cannot be less than 3000")));
+        }
         return mapper.toResponseFromEntity(repository.save(mapper.toEntity(registerDto)));
     }
 
@@ -73,7 +86,12 @@ public class SpacecraftServiceImpl implements SpacecraftService {
     @Override
     public SpacecraftResponseDto updateSpacecraft(int idSpacecraft, SpacecraftRegisterDto registerDto) {
         Optional<SpacecraftEntity> existingSpacecraft = repository.getById(idSpacecraft);
+        if(existingSpacecraft.isEmpty()){
+            throw new RuntimeException("This spacecraft don't exist");
+        }
+
         SpacecraftEntity spacecraftEntity = existingSpacecraft.get();
+
         spacecraftEntity.setName(registerDto.getName());
         spacecraftEntity.setFuel(registerDto.getFuel());
         spacecraftEntity.setOxygen(registerDto.getOxygen());
@@ -82,6 +100,20 @@ public class SpacecraftServiceImpl implements SpacecraftService {
         SpacecraftEntity updatedSpacecraft = repository.update(spacecraftEntity);
 
         return mapper.toResponseFromEntity(updatedSpacecraft);
+    }
+
+    @Override
+    public void deleteSpacecraft(int idSpacecraft) {
+        Optional<SpacecraftEntity> spacecraftEntity = repository.getById(idSpacecraft);
+        if(spacecraftEntity.isEmpty()){
+            throw new RuntimeException("This spacecraft don't exist");
+        }
+        List<TravelEntity> entityList = travelRepository.getAllTravelsBySpacecraft(spacecraftEntity.get());
+        for (TravelEntity travel : entityList) {
+            travel.setSpacecraft(null);
+            travelRepository.save(travel);
+        }
+        repository.delete(spacecraftEntity.get());
     }
 
     @Override
